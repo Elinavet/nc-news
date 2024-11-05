@@ -24,6 +24,7 @@ const CommentsPage = () => {
           <li key={comment.comment_id}>
             <p><strong>{comment.author}</strong>: {comment.body}</p>
             <p>Votes: {comment.votes}</p>
+            <p>{comment.created_at}</p>
             <hr />
           </li>
         ))}
