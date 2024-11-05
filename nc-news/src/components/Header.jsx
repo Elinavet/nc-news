@@ -8,7 +8,6 @@ const Header = ({ title })=>{
       <nav>
         <Link to="/">Home</Link>
         <Link to="/articles">Articles</Link>
-        {/* <Link to="/user-account">Create Account</Link> */}
       </nav>
     </header>
   );
