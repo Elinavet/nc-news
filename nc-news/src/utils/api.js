@@ -36,4 +36,10 @@ const getUserByUsername = (username) => {
   });
 };
 
-export { getArticles, getArticleById, getCommentsByArticleId, voteOnArticle, getUserByUsername }
+const postComment = (articleId, commentData) => {
+  return api.post(`/articles/${articleId}/comments`, commentData).then(({ data }) => {
+    return data.comment;
+  });
+};
+
+export { getArticles, getArticleById, getCommentsByArticleId, voteOnArticle, getUserByUsername, postComment }
