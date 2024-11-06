@@ -30,4 +30,10 @@ const voteOnArticle = (articleId, vote) => {
     });
 };
 
-export { getArticles, getArticleById, getCommentsByArticleId, voteOnArticle }
+const getUserByUsername = (username) => {
+  return api.get(`/users/${username}`).then(({ data }) => {
+    return data.user; 
+  });
+};
+
+export { getArticles, getArticleById, getCommentsByArticleId, voteOnArticle, getUserByUsername }
