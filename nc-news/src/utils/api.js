@@ -42,4 +42,11 @@ const postComment = (articleId, commentData) => {
   });
 };
 
-export { getArticles, getArticleById, getCommentsByArticleId, voteOnArticle, getUserByUsername, postComment }
+const deleteComment = (commentId) => {
+  return api.delete(`/comments/${commentId}`)
+    .then(({ data }) => {
+      return data;
+    });
+};
+
+export { getArticles, getArticleById, getCommentsByArticleId, voteOnArticle, getUserByUsername, postComment, deleteComment }
