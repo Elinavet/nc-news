@@ -38,15 +38,27 @@ const SingleArticle = () => {
     }
 
     setUserVote(vote);
+    setArticle((prevArticle) => ({
+      ...prevArticle,
+      votes: prevArticle.votes + vote,
+    }));
     localStorage.setItem(`userVote-${user.username}-${article_id}`, JSON.stringify(vote)); 
 
-    voteOnArticle(article_id, vote) 
-      .then((updatedArticle) => {
-        setArticle(updatedArticle); 
-      })
-      .catch((err) => {
-        setError("Error voting on article");
-      });
+    voteOnArticle(article_id, vote)
+    .then((updatedArticle) => {
+      setArticle((prevArticle) => ({
+        ...updatedArticle,
+        comment_count: prevArticle.comment_count,
+      }));
+    })
+    .catch((err) => {
+      setError("Error voting on article");
+      setUserVote(null);
+      setArticle((prevArticle) => ({
+        ...prevArticle,
+        votes: prevArticle.votes - vote,
+      }));
+    });
   };
 
   if (isLoading) return <p>Loading article...</p>;

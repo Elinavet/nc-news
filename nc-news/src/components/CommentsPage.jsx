@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getCommentsByArticleId, postComment } from "../utils/api";
+import { getCommentsByArticleId, postComment, deleteComment } from "../utils/api";
 import { useUser } from "../components/UserContext";
 
 const CommentsPage = () => {
@@ -45,6 +45,18 @@ const CommentsPage = () => {
       });
   };
 
+  const handleDeleteComment = (commentId) => {
+    deleteComment(commentId)
+      .then(() => {
+        setComments((prevComments) =>
+          prevComments.filter((comment) => comment.comment_id !== commentId)
+        );
+      })
+      .catch((err) => {
+        setError("Error deleting comment");
+      });
+  };
+
   if (isLoading) return <p>Loading comments...</p>;
   if (error) return <p>{error}</p>;
 
@@ -70,6 +82,11 @@ const CommentsPage = () => {
             <p><strong>{comment.author}</strong>: {comment.body}</p>
             <p>Votes: {comment.votes}</p>
             <p>{comment.created_at}</p>
+            {user && user.username === comment.author && (
+              <button onClick={() => handleDeleteComment(comment.comment_id)}>
+                Delete
+              </button>
+            )}
             <hr />
           </li>
         ))}
