@@ -49,4 +49,11 @@ const deleteComment = (commentId) => {
     });
 };
 
-export { getArticles, getArticleById, getCommentsByArticleId, voteOnArticle, getUserByUsername, postComment, deleteComment }
+const getTopics = () => {
+  return api.get('/topics') 
+  .then(({ data }) => {
+    return data.topics;
+  });
+};
+
+export { getArticles, getArticleById, getCommentsByArticleId, voteOnArticle, getUserByUsername, postComment, deleteComment, getTopics }
