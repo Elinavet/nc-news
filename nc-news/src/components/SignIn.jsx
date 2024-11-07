@@ -20,7 +20,7 @@ const SignIn = () => {
   };
 
   return (
-    <form onSubmit={handleSignIn}>
+    <form id='sign-in' onSubmit={handleSignIn}>
       <h2>Sign In</h2>
       <input
         type="text"

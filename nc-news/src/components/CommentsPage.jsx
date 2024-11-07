@@ -71,7 +71,7 @@ const CommentsPage = () => {
 
   return (
     <div id='comments-page'>
-      <h2>Comments for Article {article_id}</h2>
+      <h2>Comments</h2>
       {user ? (
         <form onSubmit={handleCommentSubmit}>
           <textarea
@@ -95,7 +95,7 @@ const CommentsPage = () => {
             <p>{comment.created_at}</p>
             {user && user.username === comment.author && (
               <>
-                <button
+                <button id="delete-button"
                   onClick={() => handleDeleteComment(comment.comment_id)}
                   disabled={isDeleting} 
                 >
