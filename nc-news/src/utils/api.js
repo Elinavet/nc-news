@@ -4,11 +4,33 @@ const api = axios.create({
     baseURL: 'https://my-first-project-the8.onrender.com/api'
 })
 
-const getArticles = ()=>{
-  return api.get('/articles').then(({data})=>{
-    return data.articles
+const getArticles = (topic = "", sort = "created_at_up") => {
+  const sortMapping = {
+    created_at_up: { sortBy: 'created_at', order: 'asc' },
+    created_at_down: { sortBy: 'created_at', order: 'desc' },
+    votes_up: { sortBy: 'votes', order: 'asc' },
+    votes_down: { sortBy: 'votes', order: 'desc' },
+    title_up: {sortBy: 'title', order: 'asc'},
+    title_down: {sortBy: 'title', order: 'desc'},
+  };
+
+  const { sortBy, order } = sortMapping[sort] || sortMapping['created_at_up'];  
+
+  return api.get('/articles', { 
+    params: {
+      topic,
+      sort_by: sortBy,    
+      order: order        
+    }
   })
-}
+  .then(({ data }) => {
+    return data.articles;
+  })
+  .catch((error) => {
+    console.error("Error fetching articles:", error.response ? error.response.data : error);
+    throw error; 
+  });
+};
 
 const getArticleById = (id)=>{
   return api.get(`/articles/${id}`).then(({data})=>{
