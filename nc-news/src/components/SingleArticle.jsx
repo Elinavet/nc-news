@@ -23,7 +23,7 @@ const SingleArticle = () => {
         }
       })
       .catch((err) => {
-        setError(err);
+        setError("Article not found.");
         setIsLoading(false);
       });
   }, [article_id, user]); 

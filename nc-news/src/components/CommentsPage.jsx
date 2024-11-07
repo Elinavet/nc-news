@@ -10,6 +10,8 @@ const CommentsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [newComment, setNewComment] = useState("");
   const [error, setError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     getCommentsByArticleId(article_id)
@@ -30,6 +32,8 @@ const CommentsPage = () => {
       return;
     }
 
+    setIsSubmitting(true); 
+
     const commentData = {
       body: newComment,
       username: user.username,
@@ -39,21 +43,26 @@ const CommentsPage = () => {
       .then((postedComment) => {
         setComments((prevComments) => [postedComment, ...prevComments]); 
         setNewComment(""); 
+        setIsSubmitting(false);
       })
       .catch((err) => {
         setError("Error posting comment");
+        setIsSubmitting(false);
       });
   };
 
   const handleDeleteComment = (commentId) => {
+    setIsDeleting(true);
     deleteComment(commentId)
       .then(() => {
         setComments((prevComments) =>
           prevComments.filter((comment) => comment.comment_id !== commentId)
         );
+        setIsDeleting(false);
       })
       .catch((err) => {
         setError("Error deleting comment");
+        setIsDeleting(false);
       });
   };
 
@@ -71,7 +80,9 @@ const CommentsPage = () => {
             placeholder="Add your comment here..."
             required
           />
-          <button type="submit">Submit Comment</button>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Submit"}
+          </button>
         </form>
       ) : (
         <p>You must be signed in to comment.</p>
@@ -83,9 +94,15 @@ const CommentsPage = () => {
             <p>Votes: {comment.votes}</p>
             <p>{comment.created_at}</p>
             {user && user.username === comment.author && (
-              <button onClick={() => handleDeleteComment(comment.comment_id)}>
-                Delete
-              </button>
+              <>
+                <button
+                  onClick={() => handleDeleteComment(comment.comment_id)}
+                  disabled={isDeleting} 
+                >
+                  {isDeleting ? "Deleting..." : "Delete"}
+                </button>
+                {isDeleting && <p>Deleting...</p>}
+              </>
             )}
             <hr />
           </li>
