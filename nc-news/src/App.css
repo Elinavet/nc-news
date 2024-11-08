@@ -560,3 +560,60 @@ hr {
 #sign-in p:not(:first-child) {
   margin-top: 10px;
 }
+
+#sign-in {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+#sign-in h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+#sign-in p {
+  color: rgb(77, 82, 90);
+  margin-top: 10px;
+}
+
+.sign-in-users {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.sign-in-users:hover {
+  background-color: #f9f9f9;
+}
+
+.sign-in-users img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.sign-in-users div {
+  display: flex;
+  flex-direction: column;
+}
+
+.sign-in-users p:first-child {
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.sign-in-users p:last-child {
+  color: #777;
+  margin: 0;
+}
+

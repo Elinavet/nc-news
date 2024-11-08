@@ -78,4 +78,15 @@ const getTopics = () => {
   });
 };
 
-export { getArticles, getArticleById, getCommentsByArticleId, voteOnArticle, getUserByUsername, postComment, deleteComment, getTopics }
+const getUsers = () => {
+  return api.get('/users') 
+    .then(({ data }) => {
+      return data.users; 
+    })
+    .catch((error) => {
+      console.error("Failed to fetch users:", error);
+      throw error;
+    });
+};
+
+export { getArticles, getArticleById, getCommentsByArticleId, voteOnArticle, getUserByUsername, postComment, deleteComment, getTopics, getUsers }

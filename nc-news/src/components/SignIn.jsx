@@ -1,38 +1,60 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserByUsername } from "../utils/api"; 
+import { getUsers } from "../utils/api"; 
 import { useUser } from "../components/UserContext";
 
 const SignIn = () => {
-  const [username, setUsername] = useState("");
+  const [users, setUsers] = useState([]); 
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { signIn } = useUser();
   const navigate = useNavigate();
 
-  const handleSignIn = (event) => {
-    event.preventDefault();
-    getUserByUsername(username)
-      .then((user) => {
-        signIn(user);
-        navigate("/"); 
+  useEffect(() => {
+    getUsers()
+      .then((fetchedUsers) => {
+        setUsers(fetchedUsers);
+        setLoading(false); 
       })
-      .catch(() => setError("User not found"));
+      .catch(() => {
+        setError("Failed to load users");
+        setLoading(false); 
+      });
+  }, []);
+
+  const handleUserSelect = (user) => {
+    signIn(user);
+    navigate("/"); 
   };
 
   return (
-    <form id='sign-in' onSubmit={handleSignIn}>
-      <h2>Sign In</h2>
-      <input
-        type="text"
-        placeholder="Enter username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        required
-      />
-      <button type="submit">Sign In</button>
-      {error && <p>{error}</p>}
-    </form>
+    <div id="sign-in">
+      <h2>Select User to Sign In</h2>
+      {loading ? (
+        <p id='loading'>Loading users...</p> 
+      ) : error ? (
+        <p id='error'>{error}</p> 
+      ) : (
+        <div className="user-list">
+          {users.map((user) => (
+            <div
+              className="sign-in-users"
+              key={user.username}
+              onClick={() => handleUserSelect(user)}
+            >
+              <img src={user.avatar_url} alt={`${user.name}'s avatar`} />
+              <div>
+                <p>{user.name}</p>
+                <p>{user.username}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 };
+  
 
 export default SignIn;
+
