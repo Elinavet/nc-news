@@ -11,6 +11,18 @@ const SingleArticle = () => {
   const [error, setError] = useState(null);
   const [userVote, setUserVote] = useState(null); 
 
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleDateString("en-UK", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
   useEffect(() => {
     getArticleById(article_id)
       .then((articleData) => {
@@ -71,7 +83,7 @@ const SingleArticle = () => {
       <img id="single-article-img" src={article.article_img_url} alt="image" />
       <p>{article.body}</p>
       <footer>
-        <p>Published by {article.author} at {article.created_at}</p>
+      <p>Published by {article.author} on {formatDate(article.created_at)}</p>
         <Link to={`/articles/${article_id}/comments`}>Comments: {article.comment_count}</Link>
         <p>Votes: {article.votes}</p>
         <div>

@@ -13,6 +13,18 @@ const CommentsPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleDateString("en-UK", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
   useEffect(() => {
     getCommentsByArticleId(article_id)
       .then((commentsData) => {
@@ -92,7 +104,7 @@ const CommentsPage = () => {
           <li key={comment.comment_id}>
             <p><strong>{comment.author}</strong>: {comment.body}</p>
             <p>Votes: {comment.votes}</p>
-            <p>{comment.created_at}</p>
+            <p>{formatDate(comment.created_at)}</p>
             {user && user.username === comment.author && (
               <>
                 <button id="delete-button"
