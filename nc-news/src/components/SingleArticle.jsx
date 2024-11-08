@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getArticleById, voteOnArticle } from "../utils/api";
 import { useUser } from "../components/UserContext";
+import CommentsPage from "./CommentsPage";
 
 const SingleArticle = () => {
   const { article_id } = useParams();
@@ -73,6 +74,13 @@ const SingleArticle = () => {
     });
   };
 
+  const updateCommentCount = (countChange) => {
+    setArticle((prevArticle) => ({
+      ...prevArticle,
+      comment_count: Number(prevArticle.comment_count) + countChange,
+    }));
+  };
+
   if (isLoading) return <p id='loading'>Loading article...</p>;
   if (error) return <p id='error'>Error loading article: {error}</p>;
 
@@ -84,7 +92,7 @@ const SingleArticle = () => {
       <p>{article.body}</p>
       <footer>
       <p>Published by {article.author} on {formatDate(article.created_at)}</p>
-        <Link to={`/articles/${article_id}/comments`}>Comments: {article.comment_count}</Link>
+       <p>Comments: {article.comment_count}</p>
         <p>Votes: {article.votes}</p>
         <div>
           {user ? (
@@ -102,6 +110,7 @@ const SingleArticle = () => {
           )}
         </div>
       </footer>
+      <CommentsPage article_id={article_id} updateCommentCount={updateCommentCount}/>
     </div>
   );
 };

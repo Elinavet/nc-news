@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { getCommentsByArticleId, postComment, deleteComment } from "../utils/api";
 import { useUser } from "../components/UserContext";
 
-const CommentsPage = () => {
-  const { article_id } = useParams();
+const CommentsPage = ({ article_id, updateCommentCount }) => {
   const { user } = useUser()
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -53,9 +51,10 @@ const CommentsPage = () => {
 
     postComment(article_id, commentData)
       .then((postedComment) => {
-        setComments((prevComments) => [postedComment, ...prevComments]); 
+        setComments((prevComments) => [postedComment, ...prevComments]);
         setNewComment(""); 
         setIsSubmitting(false);
+        updateCommentCount(1);
       })
       .catch((err) => {
         setError("Error posting comment");
@@ -71,6 +70,7 @@ const CommentsPage = () => {
           prevComments.filter((comment) => comment.comment_id !== commentId)
         );
         setIsDeleting(false);
+        updateCommentCount(-1);
       })
       .catch((err) => {
         setError("Error deleting comment");
